@@ -1,13 +1,18 @@
 import './index.html';
 import './index.scss';
-import code from './img/code.png'
-import { mult, sum } from './modules/calc';
 
-const imgWrap = document.querySelector('.img');
-const img = new Image();
-img.src = code;
-img.width = 700;
-imgWrap.append(img);
+import refs from './js/refs';
+import { rollDice, leave } from './js/logicApp';
 
-console.log(mult(3, 4));
-console.log(sum(3, 4));
+//Game innitial conditions
+refs.score0Element.textContent = 0;
+refs.score1Element.textContent = 0;
+
+// Hide the dice element
+
+refs.diceElement.classList.add('hidden');
+
+// Roll the dice
+
+refs.btnRoll.addEventListener('click', rollDice);
+refs.btnHold.addEventListener('click', leave);
