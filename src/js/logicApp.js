@@ -15,6 +15,7 @@ import refs from './refs';
 const totalScore = [0, 0];
 
 let currentScore = 0;
+
 let activePlayer = 0;
 
 //  const audio
