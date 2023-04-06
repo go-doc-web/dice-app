@@ -24,7 +24,7 @@ let isPlaying = true;
 const audioPlay = () => {
   refs.audioRollDice.pause();
   refs.audioRollDice.currentTime = 0;
-  //   refs.audioRollDice.play();
+    refs.audioRollDice.play();
 };
 
 const getRandomNumber = () => {
