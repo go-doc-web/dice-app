@@ -12,14 +12,9 @@ import refs from './refs';
 // import { currentScore, activePlayer } from '../js/state';
 // console.log(currentScore);
 
-const totalScore = [0, 0];
-
-let currentScore = 0;
-let activePlayer = 0;
-
-let isPlaying = true;
-
 //  const audio
+
+let totalScore, currentScore, activePlayer, isPlaying;
 
 const audioPlay = () => {
   refs.audioRollDice.pause();
@@ -113,4 +108,22 @@ export const leave = () => {
   }
 };
 
-export default { rollDice, leave };
+export const initGame = () => {
+  totalScore = [0, 0];
+  currentScore = 0;
+  activePlayer = 0;
+  isPlaying = true;
+
+  refs.diceElement.classList.add('hidden');
+  refs.score0Element.textContent = 0;
+  refs.score1Element.textContent = 0;
+  refs.currentScore0.textContent = 0;
+  refs.currentScore1.textContent = 0;
+  refs.player0.classList.remove('player--winner');
+  refs.player1.classList.remove('player--winner');
+  refs.player0.classList.remove('player--active');
+  refs.player1.classList.remove('player--active');
+  refs.player0.classList.add('player--active');
+};
+
+export default { rollDice, leave, initGame };
