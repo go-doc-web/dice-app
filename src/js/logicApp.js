@@ -24,7 +24,7 @@ let isPlaying = true;
 const audioPlay = () => {
   refs.audioRollDice.pause();
   refs.audioRollDice.currentTime = 0;
-    refs.audioRollDice.play();
+  refs.audioRollDice.play();
 };
 
 const getRandomNumber = () => {
@@ -46,11 +46,10 @@ const switchActivePlayer = () => {
 };
 
 export const rollDice = () => {
-  // 1.Audio click
-  audioPlay();
-  // Genetate a random number
-
   if (isPlaying) {
+    // 1.Audio click
+    audioPlay();
+    // Genetate a random number
     const diceNumber = getRandomNumber();
     console.log(diceNumber);
     //   Display Number on the dice
