@@ -11,6 +11,7 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "initGame": () => (/* binding */ initGame),
 /* harmony export */   "leave": () => (/* binding */ leave),
 /* harmony export */   "rollDice": () => (/* binding */ rollDice)
 /* harmony export */ });
@@ -35,18 +36,14 @@ __webpack_require__.r(__webpack_exports__);
 // import { currentScore, activePlayer } from '../js/state';
 // console.log(currentScore);
 
-var totalScore = [0, 0];
-var currentScore = 0;
-var activePlayer = 0;
-
 //  const audio
 
+var totalScore, currentScore, activePlayer, isPlaying;
 var audioPlay = function audioPlay() {
   _refs__WEBPACK_IMPORTED_MODULE_7__["default"].audioRollDice.pause();
   _refs__WEBPACK_IMPORTED_MODULE_7__["default"].audioRollDice.currentTime = 0;
-  //   refs.audioRollDice.play();
+  _refs__WEBPACK_IMPORTED_MODULE_7__["default"].audioRollDice.play();
 };
-
 var getRandomNumber = function getRandomNumber() {
   var diceNumber = Math.trunc(Math.random() * 6 + 1);
   return diceNumber;
@@ -62,58 +59,84 @@ var switchActivePlayer = function switchActivePlayer() {
   _refs__WEBPACK_IMPORTED_MODULE_7__["default"].lable1.classList.toggle('lable--active');
 };
 var rollDice = function rollDice() {
-  // 1.Audio click
-  audioPlay();
-  // Genetate a random number
-  var diceNumber = getRandomNumber();
-  console.log(diceNumber);
-  //   Display Number on the dice
-  _refs__WEBPACK_IMPORTED_MODULE_7__["default"].diceElement.classList.remove('hidden');
-  switch (diceNumber) {
-    case 1:
-      _refs__WEBPACK_IMPORTED_MODULE_7__["default"].diceElement.src = _img_dice1_png__WEBPACK_IMPORTED_MODULE_1__;
-      break;
-    case 2:
-      _refs__WEBPACK_IMPORTED_MODULE_7__["default"].diceElement.src = _img_dice2_png__WEBPACK_IMPORTED_MODULE_2__;
-      break;
-    case 3:
-      _refs__WEBPACK_IMPORTED_MODULE_7__["default"].diceElement.src = _img_dice3_png__WEBPACK_IMPORTED_MODULE_3__;
-      break;
-    case 4:
-      _refs__WEBPACK_IMPORTED_MODULE_7__["default"].diceElement.src = _img_dice4_png__WEBPACK_IMPORTED_MODULE_4__;
-      break;
-    case 5:
-      _refs__WEBPACK_IMPORTED_MODULE_7__["default"].diceElement.src = _img_dice5_png__WEBPACK_IMPORTED_MODULE_5__;
-      break;
-    case 6:
-      _refs__WEBPACK_IMPORTED_MODULE_7__["default"].diceElement.src = _img_dice6_png__WEBPACK_IMPORTED_MODULE_6__;
-      break;
-    default:
-      _refs__WEBPACK_IMPORTED_MODULE_7__["default"].diceElement.classList.add('hidden');
-  }
-  // if the number is 1, switch to the next player, if not -add number to the current score
+  if (isPlaying) {
+    // 1.Audio click
+    audioPlay();
+    // Genetate a random number
+    var diceNumber = getRandomNumber();
+    console.log(diceNumber);
+    //   Display Number on the dice
+    _refs__WEBPACK_IMPORTED_MODULE_7__["default"].diceElement.classList.remove('hidden');
+    switch (diceNumber) {
+      case 1:
+        _refs__WEBPACK_IMPORTED_MODULE_7__["default"].diceElement.src = _img_dice1_png__WEBPACK_IMPORTED_MODULE_1__;
+        break;
+      case 2:
+        _refs__WEBPACK_IMPORTED_MODULE_7__["default"].diceElement.src = _img_dice2_png__WEBPACK_IMPORTED_MODULE_2__;
+        break;
+      case 3:
+        _refs__WEBPACK_IMPORTED_MODULE_7__["default"].diceElement.src = _img_dice3_png__WEBPACK_IMPORTED_MODULE_3__;
+        break;
+      case 4:
+        _refs__WEBPACK_IMPORTED_MODULE_7__["default"].diceElement.src = _img_dice4_png__WEBPACK_IMPORTED_MODULE_4__;
+        break;
+      case 5:
+        _refs__WEBPACK_IMPORTED_MODULE_7__["default"].diceElement.src = _img_dice5_png__WEBPACK_IMPORTED_MODULE_5__;
+        break;
+      case 6:
+        _refs__WEBPACK_IMPORTED_MODULE_7__["default"].diceElement.src = _img_dice6_png__WEBPACK_IMPORTED_MODULE_6__;
+        break;
+      default:
+        _refs__WEBPACK_IMPORTED_MODULE_7__["default"].diceElement.classList.add('hidden');
+    }
+    // if the number is 1, switch to the next player, if not -add number to the current score
 
-  if (diceNumber !== 1) {
-    currentScore += diceNumber;
-    document.getElementById("current--".concat(activePlayer)).textContent = currentScore;
-    notiflix_build_notiflix_notify_aio__WEBPACK_IMPORTED_MODULE_0__.Notify.success('Next');
-  } else {
-    switchActivePlayer();
+    if (diceNumber !== 1) {
+      currentScore += diceNumber;
+      document.getElementById("current--".concat(activePlayer)).textContent = currentScore;
+      notiflix_build_notiflix_notify_aio__WEBPACK_IMPORTED_MODULE_0__.Notify.success('Next');
+    } else {
+      switchActivePlayer();
+    }
   }
 };
 var leave = function leave() {
-  totalScore[activePlayer] += currentScore;
-  document.getElementById("score--".concat(activePlayer)).textContent = totalScore[activePlayer];
-  if (totalScore[activePlayer] >= 20) {
-    document.querySelector(".player--".concat(activePlayer)).classList.add('player--winner');
-    document.querySelector(".player--".concat(activePlayer)).classList.remove('player--active');
-  } else {
-    switchActivePlayer();
+  if (isPlaying) {
+    // 1. Add current score to active player total score
+    totalScore[activePlayer] += currentScore;
+    document.getElementById("score--".concat(activePlayer)).textContent = totalScore[activePlayer];
+
+    // 2. if total score of active player >= 100 , active player won , if not switch active player
+    if (totalScore[activePlayer] >= 20) {
+      isPlaying = false;
+      document.querySelector(".player--".concat(activePlayer)).classList.add('player--winner');
+      document.querySelector(".player--".concat(activePlayer)).classList.remove('player--active');
+      _refs__WEBPACK_IMPORTED_MODULE_7__["default"].diceElement.classList.add('hidden');
+    } else {
+      switchActivePlayer();
+    }
   }
+};
+var initGame = function initGame() {
+  totalScore = [0, 0];
+  currentScore = 0;
+  activePlayer = 0;
+  isPlaying = true;
+  _refs__WEBPACK_IMPORTED_MODULE_7__["default"].diceElement.classList.add('hidden');
+  _refs__WEBPACK_IMPORTED_MODULE_7__["default"].score0Element.textContent = 0;
+  _refs__WEBPACK_IMPORTED_MODULE_7__["default"].score1Element.textContent = 0;
+  _refs__WEBPACK_IMPORTED_MODULE_7__["default"].currentScore0.textContent = 0;
+  _refs__WEBPACK_IMPORTED_MODULE_7__["default"].currentScore1.textContent = 0;
+  _refs__WEBPACK_IMPORTED_MODULE_7__["default"].player0.classList.remove('player--winner');
+  _refs__WEBPACK_IMPORTED_MODULE_7__["default"].player1.classList.remove('player--winner');
+  _refs__WEBPACK_IMPORTED_MODULE_7__["default"].player0.classList.remove('player--active');
+  _refs__WEBPACK_IMPORTED_MODULE_7__["default"].player1.classList.remove('player--active');
+  _refs__WEBPACK_IMPORTED_MODULE_7__["default"].player0.classList.add('player--active');
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   rollDice: rollDice,
-  leave: leave
+  leave: leave,
+  initGame: initGame
 });
 
 /***/ }),
@@ -353,7 +376,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___HTML_LOADER_IMPORT_0___ = new URL(/* asset import */ __webpack_require__(/*! ./img/favicon.svg */ "./src/img/favicon.svg"), __webpack_require__.b);
 var ___HTML_LOADER_IMPORT_1___ = new URL(/* asset import */ __webpack_require__(/*! ./img/favicon.png */ "./src/img/favicon.png"), __webpack_require__.b);
-var ___HTML_LOADER_IMPORT_2___ = new URL(/* asset import */ __webpack_require__(/*! ./audio/rollDice.mp3 */ "./src/audio/rollDice.mp3"), __webpack_require__.b);
+var ___HTML_LOADER_IMPORT_2___ = new URL(/* asset import */ __webpack_require__(/*! ../dist/audio/rollDice.mp3 */ "./dist/audio/rollDice.mp3"), __webpack_require__.b);
 // Module
 var ___HTML_LOADER_REPLACEMENT_0___ = _node_modules_html_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_0___default()(___HTML_LOADER_IMPORT_0___);
 var ___HTML_LOADER_REPLACEMENT_1___ = _node_modules_html_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_0___default()(___HTML_LOADER_IMPORT_1___);
@@ -1318,10 +1341,10 @@ module.exports = styleTagTransform;
 
 /***/ }),
 
-/***/ "./src/audio/rollDice.mp3":
-/*!********************************!*\
-  !*** ./src/audio/rollDice.mp3 ***!
-  \********************************/
+/***/ "./dist/audio/rollDice.mp3":
+/*!*********************************!*\
+  !*** ./dist/audio/rollDice.mp3 ***!
+  \*********************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -1569,19 +1592,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 //Game innitial conditions
-_js_refs__WEBPACK_IMPORTED_MODULE_2__["default"].score0Element.textContent = 0;
-_js_refs__WEBPACK_IMPORTED_MODULE_2__["default"].score1Element.textContent = 0;
+(0,_js_logicApp__WEBPACK_IMPORTED_MODULE_3__.initGame)();
 
 // Hide the dice element
-
-_js_refs__WEBPACK_IMPORTED_MODULE_2__["default"].diceElement.classList.add('hidden');
 
 // Roll the dice
 
 _js_refs__WEBPACK_IMPORTED_MODULE_2__["default"].btnRoll.addEventListener('click', _js_logicApp__WEBPACK_IMPORTED_MODULE_3__.rollDice);
 _js_refs__WEBPACK_IMPORTED_MODULE_2__["default"].btnHold.addEventListener('click', _js_logicApp__WEBPACK_IMPORTED_MODULE_3__.leave);
+_js_refs__WEBPACK_IMPORTED_MODULE_2__["default"].btnNewGame.addEventListener('click', _js_logicApp__WEBPACK_IMPORTED_MODULE_3__.initGame);
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=main.f2aae43004ab832c8502.js.map
+//# sourceMappingURL=main.4b63d98e278cba418ba7.js.map
