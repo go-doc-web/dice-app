@@ -376,7 +376,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___HTML_LOADER_IMPORT_0___ = new URL(/* asset import */ __webpack_require__(/*! ./img/favicon.svg */ "./src/img/favicon.svg"), __webpack_require__.b);
 var ___HTML_LOADER_IMPORT_1___ = new URL(/* asset import */ __webpack_require__(/*! ./img/favicon.png */ "./src/img/favicon.png"), __webpack_require__.b);
-var ___HTML_LOADER_IMPORT_2___ = new URL(/* asset import */ __webpack_require__(/*! ../dist/audio/rollDice.mp3 */ "./dist/audio/rollDice.mp3"), __webpack_require__.b);
+var ___HTML_LOADER_IMPORT_2___ = new URL(/* asset import */ __webpack_require__(/*! ./audio/dice-audio.mp3 */ "./src/audio/dice-audio.mp3"), __webpack_require__.b);
 // Module
 var ___HTML_LOADER_REPLACEMENT_0___ = _node_modules_html_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_0___default()(___HTML_LOADER_IMPORT_0___);
 var ___HTML_LOADER_REPLACEMENT_1___ = _node_modules_html_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_0___default()(___HTML_LOADER_IMPORT_1___);
@@ -1341,14 +1341,14 @@ module.exports = styleTagTransform;
 
 /***/ }),
 
-/***/ "./dist/audio/rollDice.mp3":
-/*!*********************************!*\
-  !*** ./dist/audio/rollDice.mp3 ***!
-  \*********************************/
+/***/ "./src/audio/dice-audio.mp3":
+/*!**********************************!*\
+  !*** ./src/audio/dice-audio.mp3 ***!
+  \**********************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-module.exports = __webpack_require__.p + "assets/rollDice.mp3";
+module.exports = __webpack_require__.p + "assets/dice-audio.mp3";
 
 /***/ }),
 
@@ -1593,11 +1593,6 @@ __webpack_require__.r(__webpack_exports__);
 
 //Game innitial conditions
 (0,_js_logicApp__WEBPACK_IMPORTED_MODULE_3__.initGame)();
-
-// Hide the dice element
-
-// Roll the dice
-
 _js_refs__WEBPACK_IMPORTED_MODULE_2__["default"].btnRoll.addEventListener('click', _js_logicApp__WEBPACK_IMPORTED_MODULE_3__.rollDice);
 _js_refs__WEBPACK_IMPORTED_MODULE_2__["default"].btnHold.addEventListener('click', _js_logicApp__WEBPACK_IMPORTED_MODULE_3__.leave);
 _js_refs__WEBPACK_IMPORTED_MODULE_2__["default"].btnNewGame.addEventListener('click', _js_logicApp__WEBPACK_IMPORTED_MODULE_3__.initGame);
@@ -1605,4 +1600,4 @@ _js_refs__WEBPACK_IMPORTED_MODULE_2__["default"].btnNewGame.addEventListener('cl
 
 /******/ })()
 ;
-//# sourceMappingURL=main.4b63d98e278cba418ba7.js.map
+//# sourceMappingURL=main.9df38fc808e966012806.js.map
