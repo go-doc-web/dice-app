@@ -15,8 +15,9 @@ import refs from './refs';
 const totalScore = [0, 0];
 
 let currentScore = 0;
-
 let activePlayer = 0;
+
+let isPlaying = true;
 
 //  const audio
 
@@ -48,58 +49,68 @@ export const rollDice = () => {
   // 1.Audio click
   audioPlay();
   // Genetate a random number
-  const diceNumber = getRandomNumber();
-  console.log(diceNumber);
-  //   Display Number on the dice
-  refs.diceElement.classList.remove('hidden');
 
-  switch (diceNumber) {
-    case 1:
-      refs.diceElement.src = imgDice;
-      break;
-    case 2:
-      refs.diceElement.src = imgDice2;
-      break;
-    case 3:
-      refs.diceElement.src = imgDice3;
-      break;
-    case 4:
-      refs.diceElement.src = imgDice4;
-      break;
-    case 5:
-      refs.diceElement.src = imgDice5;
-      break;
-    case 6:
-      refs.diceElement.src = imgDice6;
-      break;
-    default:
-      refs.diceElement.classList.add('hidden');
-  }
-  // if the number is 1, switch to the next player, if not -add number to the current score
+  if (isPlaying) {
+    const diceNumber = getRandomNumber();
+    console.log(diceNumber);
+    //   Display Number on the dice
+    refs.diceElement.classList.remove('hidden');
 
-  if (diceNumber !== 1) {
-    currentScore += diceNumber;
-    document.getElementById(`current--${activePlayer}`).textContent =
-      currentScore;
-    Notify.success('Next');
-  } else {
-    switchActivePlayer();
+    switch (diceNumber) {
+      case 1:
+        refs.diceElement.src = imgDice;
+        break;
+      case 2:
+        refs.diceElement.src = imgDice2;
+        break;
+      case 3:
+        refs.diceElement.src = imgDice3;
+        break;
+      case 4:
+        refs.diceElement.src = imgDice4;
+        break;
+      case 5:
+        refs.diceElement.src = imgDice5;
+        break;
+      case 6:
+        refs.diceElement.src = imgDice6;
+        break;
+      default:
+        refs.diceElement.classList.add('hidden');
+    }
+    // if the number is 1, switch to the next player, if not -add number to the current score
+
+    if (diceNumber !== 1) {
+      currentScore += diceNumber;
+      document.getElementById(`current--${activePlayer}`).textContent =
+        currentScore;
+      Notify.success('Next');
+    } else {
+      switchActivePlayer();
+    }
   }
 };
 
 export const leave = () => {
-  totalScore[activePlayer] += currentScore;
-  document.getElementById(`score--${activePlayer}`).textContent =
-    totalScore[activePlayer];
-  if (totalScore[activePlayer] >= 20) {
-    document
-      .querySelector(`.player--${activePlayer}`)
-      .classList.add('player--winner');
-    document
-      .querySelector(`.player--${activePlayer}`)
-      .classList.remove('player--active');
-  } else {
-    switchActivePlayer();
+  if (isPlaying) {
+    // 1. Add current score to active player total score
+    totalScore[activePlayer] += currentScore;
+    document.getElementById(`score--${activePlayer}`).textContent =
+      totalScore[activePlayer];
+
+    // 2. if total score of active player >= 100 , active player won , if not switch active player
+    if (totalScore[activePlayer] >= 20) {
+      isPlaying = false;
+      document
+        .querySelector(`.player--${activePlayer}`)
+        .classList.add('player--winner');
+      document
+        .querySelector(`.player--${activePlayer}`)
+        .classList.remove('player--active');
+      refs.diceElement.classList.add('hidden');
+    } else {
+      switchActivePlayer();
+    }
   }
 };
 
